@@ -48,14 +48,7 @@ isEmpty Empty = Empty
 isEmpty Nothing = Nothing
 
 atom_case : (x : a) -> RegExpSpec (Atom x) [] -> Void
-atom_case _ (AtomSpec _) impossible
-atom_case _ (DisjSpec1 _ _ _ _) impossible
-atom_case _ (DisjSpec2 _ _ _ _) impossible
-atom_case _ (SeqSpec _ _ _ _ _ _ _ _) impossible
-atom_case _ (StarSpec0 _) impossible
-atom_case _ (StarSpecS _ _ _ _ _ _ _) impossible
-atom_case _ EmptySpec impossible
-
+atom_case _ _ impossible
 
 disj_case : (x: RegExp a) -> (y: RegExp a) ->
             (contra1: RegExpSpec x [] -> Void) ->
@@ -106,13 +99,7 @@ seq_no_case2 x y f (SeqSpec xs ys [] x y z w prf) =
 
 match_nothing_is_false : (xs : List a) ->
                          RegExpSpec Nothing xs -> Void
-match_nothing_is_false _ (AtomSpec _) impossible
-match_nothing_is_false _ (DisjSpec1 _ _ _ _) impossible
-match_nothing_is_false _ (DisjSpec2 _ _ _ _) impossible
-match_nothing_is_false _ (SeqSpec _ _ _ _ _ _ _ _) impossible
-match_nothing_is_false _ (StarSpec0 _) impossible
-match_nothing_is_false _ (StarSpecS _ _ _ _ _ _ _) impossible
-match_nothing_is_false _ EmptySpec impossible
+match_nothing_is_false _ _ impossible
 
 decEmpty : (r : RegExp a) -> Dec (RegExpSpec r [])
 decEmpty (Atom x) = No (atom_case x)
@@ -211,20 +198,8 @@ derivative_is_sound (Star z) x _ (SeqSpec xs ys zs _ (Star z) y w prf) =
   rewrite prf in
   let h = derivative_is_sound z x xs y in
   StarSpecS (x :: xs) ys (x :: xs ++ ys) z h w Refl
-derivative_is_sound Empty _ _ (AtomSpec _) impossible
-derivative_is_sound Empty _ _ (DisjSpec1 _ _ _ _) impossible
-derivative_is_sound Empty _ _ (DisjSpec2 _ _ _ _) impossible
-derivative_is_sound Empty _ _ (SeqSpec _ _ _ _ _ _ _ _) impossible
-derivative_is_sound Empty _ _ (StarSpec0 _) impossible
-derivative_is_sound Empty _ _ (StarSpecS _ _ _ _ _ _ _) impossible
-derivative_is_sound Empty _ _ EmptySpec impossible
-derivative_is_sound Nothing _ _ (AtomSpec _) impossible
-derivative_is_sound Nothing _ _ (DisjSpec1 _ _ _ _) impossible
-derivative_is_sound Nothing _ _ (DisjSpec2 _ _ _ _) impossible
-derivative_is_sound Nothing _ _ (SeqSpec _ _ _ _ _ _ _ _) impossible
-derivative_is_sound Nothing _ _ (StarSpec0 _) impossible
-derivative_is_sound Nothing _ _ (StarSpecS _ _ _ _ _ _ _) impossible
-derivative_is_sound Nothing _ _ EmptySpec impossible
+derivative_is_sound Empty _ _ _ impossible
+derivative_is_sound Nothing _ _ _ impossible
 
 atom_match_implies: (x : a) -> (xs : List a) ->
                     RegExpSpec (Atom x) (x :: xs) -> xs = []
@@ -239,13 +214,7 @@ cons_is_not_nil _ _ Refl impossible
 
 is_empty_is_complete : (r : RegExp a) -> RegExpSpec r [] ->
                        RegExpSpec (isEmpty r) []
-is_empty_is_complete (Atom _) (AtomSpec _) impossible
-is_empty_is_complete (Atom _) (DisjSpec1 _ _ _ _) impossible
-is_empty_is_complete (Atom _) (DisjSpec2 _ _ _ _) impossible
-is_empty_is_complete (Atom _) (SeqSpec _ _ _ _ _ _ _ _) impossible
-is_empty_is_complete (Atom _) (StarSpec0 _) impossible
-is_empty_is_complete (Atom _) (StarSpecS _ _ _ _ _ _ _) impossible
-is_empty_is_complete (Atom _) EmptySpec impossible
+is_empty_is_complete (Atom _) _ impossible
 is_empty_is_complete (Disj y z) (DisjSpec1 y z [] x) =
   let h = is_empty_is_complete y x in
   DisjSpec1 (isEmpty y) (isEmpty z) [] h

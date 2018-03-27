@@ -12,7 +12,7 @@ data RegExp: Type -> Type where
   Empty: RegExp a
   Nothing: RegExp a
 
-data RegExpSpec: (RegExp a) -> (xs: List a) -> Type where
+data RegExpSpec: RegExp a -> List a -> Type where
   AtomSpec: (x : a) -> RegExpSpec (Atom x) [x]
   DisjSpec1: (r1 : RegExp a) ->
              (r2: RegExp a) -> (xs : List a) ->
@@ -39,7 +39,7 @@ data RegExpSpec: (RegExp a) -> (xs: List a) -> Type where
              RegExpSpec (Star r) zs
   EmptySpec: RegExpSpec Empty []
 
-isEmpty : (r : RegExp a) -> RegExp a
+isEmpty : RegExp a -> RegExp a
 isEmpty (Atom x) = Nothing
 isEmpty (Disj x y) = Disj (isEmpty x) (isEmpty y)
 isEmpty (Seq x y) = Seq (isEmpty x) (isEmpty y)

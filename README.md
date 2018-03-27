@@ -5,7 +5,7 @@ The grammar is given by `RegExp: Type -> Type`.
 The semantics of regular expressions is specified by
 
 ```idris
-RegExpSpec: (RegExp a) -> (xs: List a) -> Type
+RegExpSpec: RegExp a -> List a -> Type
 ```
 
 Finally the file contains a verified matching procedure for deciding regular language membership

@@ -163,11 +163,6 @@ is_empty_is_sound (Star y) xs x = StarSpec0 y
 is_empty_is_sound Empty xs x = EmptySpec
 is_empty_is_sound Nothing xs x = void (match_nothing_is_false xs x)
 
-seq_nothing_match_is_false : (r : RegExp a) -> (xs : List a) ->
-                             RegExpSpec (Seq Nothing r) xs -> Void
-seq_nothing_match_is_false r xs (SeqSpec ys zs xs Nothing r x y prf) =
-  void (match_nothing_is_false ys x)
-
 derivative_is_sound: DecEq a => (r : RegExp a) ->
                      (x : a) -> (xs : List a) ->
                      RegExpSpec (derive r x) xs -> RegExpSpec r (x :: xs)
